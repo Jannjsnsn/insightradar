@@ -1,0 +1,30 @@
+<div class="sandbox-card" id="sandbox">
+<div class="sandbox-topbar">
+<div class="live-indicator">
+<div class="dot-live"></div>
+<span id="current-target-title">正在实时监控：Tally.so (对标 Typeform)</span>
+</div>
+<div class="target-tabs">
+<button class="target-tab-btn active" id="btn-target-tally" onclick="switchTarget('tally')">Tally 攻防</button>
+<button class="target-tab-btn" id="btn-target-dub" onclick="switchTarget('dub')">Dub 攻防</button>
+<button class="target-tab-btn" id="btn-target-cal" onclick="switchTarget('cal')">Cal 攻防</button>
+</div>
+</div>
+<div class="sandbox-content">
+<div class="subnav-tabs">
+<div class="subnav-tab active" id="tab-diff" onclick="switchSubTab('diff')">
+<span class="material-symbols-outlined" style="font-size: 18px;">difference</span>
+Tab 1: 价格与功能异动 Diff
+</div>
+<div class="subnav-tab" id="tab-sentiment" onclick="switchSubTab('sentiment')">
+<span class="material-symbols-outlined" style="font-size: 18px;">forum</span>
+Tab 2: G2 / Reddit 差评挖掘机
+</div>
+<div class="subnav-tab" id="tab-channels" onclick="switchSubTab('channels')">
+<span class="material-symbols-outlined" style="font-size: 18px;">hub</span>
+Tab 3: 增长渠道与外链反查
+</div>
+</div>
+<div id="panels-root"></div>
+</div>
+</div>
