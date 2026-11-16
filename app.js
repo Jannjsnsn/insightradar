@@ -1,10 +1,16 @@
 Promise.all([
   fetch('sandbox.html').then(r => r.text()),
+  fetch('panels1.html').then(r => r.text()),
+  fetch('panels2.html').then(r => r.text()),
   fetch('content.html').then(r => r.text())
-]).then(([sbHtml, ctHtml]) => {
+]).then(([sbHtml, p1Html, p2Html, ctHtml]) => {
   const sbRoot = document.getElementById('sandbox-root');
   if (sbRoot) {
     sbRoot.innerHTML = sbHtml;
+    const pnRoot = document.getElementById('panels-root');
+    if (pnRoot) {
+      pnRoot.innerHTML = p1Html + p2Html;
+    }
     switchTarget('tally');
   }
   const ctRoot = document.getElementById('content-root');
