@@ -1,57 +1,67 @@
+Promise.all([
+  fetch('sandbox.html').then(r => r.text()),
+  fetch('content.html').then(r => r.text())
+]).then(([sbHtml, ctHtml]) => {
+  const sbRoot = document.getElementById('sandbox-root');
+  if (sbRoot) {
+    sbRoot.innerHTML = sbHtml;
+    switchTarget('tally');
+  }
+  const ctRoot = document.getElementById('content-root');
+  if (ctRoot) {
+    ctRoot.innerHTML = ctHtml;
+  }
+});
+
 let currentTarget = 'tally';
 let currentSubTab = 'diff';
 const targetMeta = {
   tally: {
-    title: 'Tally.so · 表单与无代码收集工具',
-    domain: 'tally.so',
-    status: '高频变动中',
-    statusClass: 'status-pulse-yellow',
-    category: 'Forms & Data Collection',
-    rank: '#1 ProductHunt Category'
+    title: '正在实时监控：Tally.so (对标 Typeform)',
+    inputVal: 'tally.so'
   },
   dub: {
-    title: 'Dub.co · 现代短链与全链路归因',
-    domain: 'dub.co',
-    status: '商业化突围中',
-    statusClass: 'status-pulse-green',
-    category: 'Link Attribution & Analytics',
-    rank: '#1 Modern Shortlink'
+    title: '正在实时监控：Dub.co (对标 Bitly)',
+    inputVal: 'dub.co'
   },
   cal: {
-    title: 'Cal.com · 企业级开源预约基础设施',
-    domain: 'cal.com',
-    status: '大客户渗透期',
-    statusClass: 'status-pulse-green',
-    category: 'Scheduling Infrastructure',
-    rank: 'Enterprise Standard'
+    title: '正在实时监控：Cal.com (对标 Calendly)',
+    inputVal: 'cal.com'
   }
 };
 
-function switchTarget(target) {
+function switchTarget(target, btnEl) {
   currentTarget = target;
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.target === target);
-  });
-  const meta = targetMeta[target];
-  if (meta) {
-    document.getElementById('target-title').innerText = meta.title;
-    document.getElementById('target-domain-badge').innerText = meta.domain;
-    document.getElementById('target-category-badge').innerText = meta.category;
-    document.getElementById('target-rank-badge').innerText = meta.rank;
+  const titleEl = document.getElementById('current-target-title');
+  if (titleEl) titleEl.innerText = targetMeta[target].title;
+  const inputEl = document.getElementById('target-domain-input');
+  if (inputEl) inputEl.value = targetMeta[target].inputVal;
+  document.querySelectorAll('.capsule-btn').forEach(btn => btn.classList.remove('active'));
+  if (btnEl) {
+    btnEl.classList.add('active');
+  } else {
+    const capsules = document.querySelectorAll('.capsule-btn');
+    if (target === 'tally') capsules[0]?.classList.add('active');
+    if (target === 'dub') capsules[1]?.classList.add('active');
+    if (target === 'cal') capsules[2]?.classList.add('active');
   }
+  document.querySelectorAll('.target-tab-btn').forEach(b => b.classList.remove('active'));
+  const activeTabBtn = document.getElementById('btn-target-' + target);
+  if (activeTabBtn) activeTabBtn.classList.add('active');
   ['tally', 'dub', 'cal'].forEach(t => {
-    const sandboxEl = document.getElementById('sandbox-' + t);
-    if (sandboxEl) {
-      sandboxEl.style.display = (t === target) ? 'block' : 'none';
-    }
+    const el = document.getElementById('content-' + t);
+    if (el) el.style.display = (t === target) ? 'block' : 'none';
   });
   switchSubTab(currentSubTab);
 }
 
 function switchSubTab(subTab) {
   currentSubTab = subTab;
-  document.querySelectorAll('.subtab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.subtab === subTab);
+  ['diff', 'sentiment', 'channels'].forEach(t => {
+    const tabEl = document.getElementById('tab-' + t);
+    if (tabEl) {
+      tabEl.classList.toggle('active', t === subTab);
+    }
   });
   ['diff', 'sentiment', 'channels'].forEach(t => {
     const panelEl = document.getElementById(currentTarget + '-' + t);
